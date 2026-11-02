@@ -1,17 +1,36 @@
 import os
+from pathlib import Path
+
 from dotenv import load_dotenv
 from google import genai
 
-# Load environment variables
-load_dotenv()
+# Load local .env during development. Streamlit Cloud uses st.secrets.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+load_dotenv(PROJECT_ROOT / ".env")
 
-# Read Gemini API key
-api_key = os.getenv("GEMINI_API_KEY")
+
+def get_setting(name):
+    """Read a setting from environment variables or Streamlit secrets."""
+    value = os.getenv(name)
+    if value:
+        return value
+
+    try:
+        import streamlit as st
+        return st.secrets[name]
+    except Exception:
+        return None
+
+
+# Read Gemini API key from local environment or Streamlit secrets.
+api_key = get_setting("GEMINI_API_KEY")
 
 if not api_key:
-    raise ValueError("GEMINI_API_KEY not found in .env file")
+    raise ValueError(
+        "GEMINI_API_KEY is not configured. Add it to your local .env "
+        "or Streamlit Cloud Secrets."
+    )
 
-# Initialize Gemini client
 client = genai.Client(api_key=api_key)
 
 
@@ -20,5 +39,4 @@ def ask_gemini(question):
         model="gemini-2.5-flash",
         contents=question
     )
-
     return response.text
