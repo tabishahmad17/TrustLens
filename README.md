@@ -1,21 +1,72 @@
 # TrustLens — AI-Powered E-commerce Analytics
 
-**A Governed AI Analytics Assistant for E-commerce Delivery and Customer Satisfaction**
+<p align="center">
+  <strong>A Governed AI Analytics Assistant for E-commerce Delivery and Customer Satisfaction</strong>
+</p>
 
-TrustLens is an end-to-end analytics project built using Python, PostgreSQL, Power BI, and Streamlit. It analyzes e-commerce delivery performance, customer satisfaction, sales trends, and operational issues using business intelligence and AI-assisted SQL analysis.
+<p align="center">
+  <img src="screenshots/operations_overview.png" alt="TrustLens Operations Overview" width="100%">
+</p>
+
+## Overview
+
+TrustLens is an end-to-end e-commerce analytics project that combines Python, PostgreSQL, Power BI and Generative AI to analyze delivery performance, customer satisfaction and business operations.
+
+It includes interactive Power BI dashboards and an AI-powered Streamlit assistant that converts natural-language business questions into SQL queries, validates them and retrieves results from PostgreSQL.
+
+## Project Screenshots
+
+### 1. Operations Overview
+![Operations Overview](screenshots/operations_overview.png)
+
+### 2. Delivery Analysis
+![Delivery Analysis](screenshots/delivery_analysis.png)
+
+### 3. TrustLens AI Assistant
+![AI Assistant](screenshots/ai_assistant.png)
+
+### 4. SQL Generation and Database Results
+![SQL Analytics](screenshots/sql_analytics.png)
 
 ## Business Problem
 
-Late deliveries can negatively affect customer satisfaction and business performance. TrustLens helps analyze delivery delays, identify operational patterns, and investigate business questions using data.
+Late deliveries can negatively affect customer satisfaction and operational performance.
+
+TrustLens helps investigate questions such as:
+
+- Which states have the highest late-delivery rates?
+- How do delivery delays relate to customer review scores?
+- Which product categories experience more delivery delays?
+- Which sellers contribute most to late deliveries?
+- How are monthly sales and order trends changing?
 
 ## Key Features
 
-- **Data Engineering:** Load and process raw e-commerce datasets using Python.
-- **Data Quality:** Validate missing values and data consistency.
-- **SQL Analytics:** Analyze delivery performance, sales, sellers, products, and customer reviews using PostgreSQL.
-- **Power BI Dashboard:** Monitor business KPIs and delivery performance.
-- **AI Analytics Assistant:** Ask business questions in natural language and receive SQL-based analysis.
-- **Audit Logging:** Maintain a record of assistant queries and execution outcomes.
+- Python-based data ingestion and processing.
+- Data quality checks and validation.
+- PostgreSQL analytics views and business SQL queries.
+- Power BI dashboards for operational monitoring.
+- Gemini-powered natural-language SQL generation.
+- SQL validation before database execution.
+- Database result explanations.
+- Audit logging of assistant interactions.
+
+## System Architecture
+
+```mermaid
+flowchart TD
+    A["Olist E-commerce Dataset"] --> B["Python Data Processing"]
+    B --> C["PostgreSQL Database"]
+    C --> D["Analytics Views and SQL"]
+    D --> E["Power BI Dashboards"]
+    C --> F["Streamlit AI Assistant"]
+    F --> G["Google Gemini"]
+    G --> H["SQL Generation"]
+    H --> I["SQL Validation"]
+    I --> J["PostgreSQL Query Execution"]
+    J --> K["Business Results and Explanation"]
+    J --> L["Audit Logging"]
+```
 
 ## Technology Stack
 
@@ -25,10 +76,49 @@ Late deliveries can negatively affect customer satisfaction and business perform
 | Database | PostgreSQL |
 | Data Analysis | Pandas, NumPy |
 | Visualization | Power BI, Matplotlib |
-| AI | Google Gemini |
+| Generative AI | Google Gemini |
 | SQL Validation | SQLGlot |
 | Application | Streamlit |
 | Database Connectivity | Psycopg2 |
+
+## Analytics Modules
+
+**Operations Overview**
+- Total sales (GMV)
+- Total orders
+- Average order value
+- Average review score
+- Late delivery rate
+- State-wise delivery performance
+
+**Delivery Analysis**
+- Delivery delay buckets
+- Review scores by delay bucket
+- Actual versus estimated delivery days
+- Category-wise late delivery
+- State-wise delivery performance
+
+**AI Analytics Assistant**
+- Natural-language business questions
+- SQL query generation
+- SQL validation
+- Database result retrieval
+- Business-oriented explanations
+
+## AI Assistant Workflow
+
+1. User submits a natural-language question.
+2. Gemini generates an SQL query using database schema context.
+3. SQLGlot validates the generated query.
+4. PostgreSQL executes the approved query.
+5. The assistant explains the returned results.
+6. The interaction is recorded in the audit log.
+
+## Dataset
+
+**Source:** Brazilian E-Commerce Public Dataset by Olist.
+
+The dataset contains approximately 100,000 orders and multiple related tables covering customers, orders, products, sellers, payments, reviews and geolocation.
 
 ## Project Structure
 
@@ -46,6 +136,7 @@ TrustLens/
 ├── notebook/
 │   └── TrustLens_Python_EDA_Local.ipynb
 ├── powerbi/
+├── screenshots/
 ├── sql/
 ├── src/
 │   ├── assistant/
@@ -53,86 +144,76 @@ TrustLens/
 │   └── validation/
 ├── tests/
 ├── .gitignore
+├── README.md
 └── requirements.txt
 ```
 
-## Analytics Areas
+## Installation and Setup
 
-- Monthly sales and GMV analysis
-- Average order value (AOV)
-- Late delivery rate
-- Customer review analysis
-- State-wise delivery performance
-- Seller and product category analysis
-- Payment and cancellation analysis
-
-## AI Assistant Workflow
-
-1. User submits a business question.
-2. Gemini generates an SQL query.
-3. SQLGlot validates the generated query.
-4. PostgreSQL executes the query.
-5. The assistant explains the returned results.
-6. The interaction is recorded in the audit log.
-
-## Power BI Dashboard
-
-The project includes two dashboard pages:
-
-- Operations Overview
-- Delivery Analysis
-
-These dashboards provide visual monitoring of key business metrics and delivery performance.
-
-## Dataset
-
-The project uses the Brazilian E-Commerce Public Dataset by Olist.
-
-The dataset contains approximately 100,000 orders and multiple related tables covering customers, orders, products, sellers, payments, reviews, and geolocation.
-
-## Installation
-
-Clone the repository:
+### 1. Clone the repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/tabishahmad17/TrustLens.git
 cd TrustLens
 ```
 
-Create and activate a virtual environment:
+### 2. Create a virtual environment
 
 ```bash
 python -m venv .venv
 ```
 
-Install dependencies:
+Activate it on Windows:
+
+```powershell
+.venv\Scripts\activate
+```
+
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Configure your database connection and Gemini API key using environment variables in a local `.env` file.
+### 4. Configure environment variables
 
-Run the Streamlit application:
+Create a local `.env` file with the database and Gemini credentials required by your application.
+
+Never commit `.env` or expose API keys and database passwords.
+
+### 5. Configure PostgreSQL
+
+Create the `trustlens` database, load the source dataset, and execute the required SQL scripts to prepare the raw tables, analytics views and application permissions.
+
+### 6. Run the application
 
 ```bash
 streamlit run app/streamlit_app.py
 ```
 
-**Note:** PostgreSQL must be configured with the required TrustLens database and analytics objects before running the application.
+## Security and Governance
 
-## Security
+- SQL validation before query execution.
+- Read-only query execution settings.
+- Database connection separation for application operations.
+- Audit logging of assistant interactions.
+- Environment variables for sensitive configuration.
 
-- Environment secrets are excluded from Git using `.gitignore`.
-- SQL validation is applied before query execution.
-- Database query execution uses read-only session settings.
-- Assistant interactions are logged for auditing.
+## Project Limitations
+
+- Analysis is based on historical e-commerce data.
+- Observed relationships do not establish causation.
+- The assistant depends on the availability of the Gemini API and PostgreSQL database.
+- Generated SQL and explanations require appropriate validation and monitoring.
 
 ## Project Objective
 
-The objective of TrustLens is to demonstrate how data engineering, business intelligence, SQL analytics, and generative AI can work together to support data-driven business decisions.
+TrustLens demonstrates how data engineering, SQL analytics, business intelligence and generative AI can work together to support data-driven operational decisions.
 
 ---
 
 **Project:** TrustLens  
-**Focus:** Data Analytics | Business Intelligence | AI-Assisted SQL Analytics
+**Domain:** E-commerce Analytics  
+**Focus:** Python | PostgreSQL | Power BI | Generative AI | Business Intelligence
+
+**GitHub:** [tabishahmad17/TrustLens](https://github.com/tabishahmad17/TrustLens)
