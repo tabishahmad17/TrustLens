@@ -5,6 +5,10 @@
 </p>
 
 <p align="center">
+  🚀 <strong><a href="https://trustlens-u7stusobuiarm6jzslqsyu.streamlit.app/">View Live TrustLens App</a></strong>
+</p>
+
+<p align="center">
   <img src="screenshots/Screenshot%202026-11-02%20230201.png" alt="TrustLens project screenshot" width="100%">
 </p>
 
@@ -13,6 +17,10 @@
 TrustLens is an end-to-end e-commerce analytics project that combines Python, PostgreSQL, Power BI and Generative AI to analyze delivery performance, customer satisfaction and business operations.
 
 It includes interactive Power BI dashboards and an AI-powered Streamlit assistant that converts natural-language business questions into SQL queries, validates them and retrieves results from PostgreSQL.
+
+## 🚀 Live Demo
+
+Try the deployed application: **[Open TrustLens](https://trustlens-u7stusobuiarm6jzslqsyu.streamlit.app/)**
 
 ## Project Screenshots
 
@@ -216,4 +224,5 @@ TrustLens demonstrates how data engineering, SQL analytics, business intelligenc
 **Domain:** E-commerce Analytics  
 **Focus:** Python | PostgreSQL | Power BI | Generative AI | Business Intelligence
 
+**Live App:** [Open TrustLens](https://trustlens-u7stusobuiarm6jzslqsyu.streamlit.app/)  
 **GitHub:** [tabishahmad17/TrustLens](https://github.com/tabishahmad17/TrustLens)
