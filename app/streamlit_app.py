@@ -15,6 +15,7 @@ ASSISTANT_PATH = PROJECT_ROOT / "src" / "assistant"
 sys.path.insert(0, str(ASSISTANT_PATH))
 
 from chat_router import route_message
+from dashboard import render_dashboard
 
 
 # --------------------------------------------------
@@ -61,6 +62,22 @@ st.markdown("""
 
 </style>
 """, unsafe_allow_html=True)
+
+
+# --------------------------------------------------
+# PAGE NAVIGATION
+# --------------------------------------------------
+
+page = st.sidebar.radio(
+    "Navigate",
+    ["Operations Dashboard", "AI Assistant"]
+)
+
+if page == "Operations Dashboard":
+    st.title("🔍 TrustLens")
+    st.write("Explore e-commerce performance through interactive analytics.")
+    render_dashboard()
+    st.stop()
 
 
 # --------------------------------------------------
