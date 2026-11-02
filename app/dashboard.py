@@ -7,7 +7,7 @@ from query_runner import execute_query
 def load_data(sql):
     result = execute_query(sql)
     if not result.get("success"):
-        raise RuntimeError("Unable to load dashboard data. Check the database connection and analytics views.")
+        raise RuntimeError(result.get("error", "Unknown database query error."))
     return pd.DataFrame(result.get("rows", []))
 
 
@@ -79,5 +79,6 @@ def render_dashboard():
         with st.expander("View monthly KPI data"):
             st.dataframe(monthly, use_container_width=True, hide_index=True)
 
-    except Exception:
-        st.error("Dashboard data could not be loaded. Please check the database connection and analytics views.")
+    except Exception as error:
+        st.error("Dashboard data could not be loaded. The diagnostic message is shown below.")
+        st.code(str(error))
