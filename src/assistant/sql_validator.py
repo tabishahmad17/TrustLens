@@ -108,6 +108,10 @@ def validate_sql(sql):
                 if (schema_name, table_name) not in ALLOWED_TABLES:
                     return False, f"Table not allowed: {schema_name}.{table_name}"
 
+            # Boolean operators are SQL syntax nodes, not callable functions.
+            if isinstance(node, (exp.And, exp.Or, exp.Not)):
+                continue
+
             if isinstance(node, (exp.Case, exp.If, exp.Star, exp.Cast)):
                 continue
 
