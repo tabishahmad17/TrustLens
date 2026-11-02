@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="screenshots/operations_overview.png" alt="TrustLens Operations Overview" width="100%">
+  <img src="screenshots/Screenshot%202026-11-02%20230201.png" alt="TrustLens project screenshot" width="100%">
 </p>
 
 ## Overview
@@ -17,16 +17,16 @@ It includes interactive Power BI dashboards and an AI-powered Streamlit assistan
 ## Project Screenshots
 
 ### 1. Operations Overview
-![Operations Overview](screenshots/operations_overview.png)
+![Operations Overview](screenshots/Screenshot%202026-11-02%20230201.png)
 
 ### 2. Delivery Analysis
-![Delivery Analysis](screenshots/delivery_analysis.png)
+![Delivery Analysis](screenshots/Screenshot%202026-11-02%20230219.png)
 
 ### 3. TrustLens AI Assistant
-![AI Assistant](screenshots/ai_assistant.png)
+![AI Assistant](screenshots/Screenshot%202026-11-02%20230317.png)
 
 ### 4. SQL Generation and Database Results
-![SQL Analytics](screenshots/sql_analytics.png)
+![SQL Analytics](screenshots/Screenshot%202026-11-02%20230518.png)
 
 ## Business Problem
 
@@ -166,7 +166,7 @@ python -m venv .venv
 Activate it on Windows:
 
 ```powershell
-.venv\Scripts\activate
+.venv\\Scripts\\activate
 ```
 
 ### 3. Install dependencies
