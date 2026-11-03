@@ -1,228 +1,304 @@
-# TrustLens — AI-Powered E-commerce Analytics
+# 🔎 TrustLens — Governed AI Analytics for E-commerce
 
 <p align="center">
-  <strong>A Governed AI Analytics Assistant for E-commerce Delivery and Customer Satisfaction</strong>
+  <strong>Explore delivery performance, customer satisfaction and e-commerce operations with PostgreSQL, Power BI and a Gemini-powered analytics assistant.</strong>
 </p>
 
 <p align="center">
-  🚀 <strong><a href="https://trustlens-u7stusobuiarm6jzslqsyu.streamlit.app/">View Live TrustLens App</a></strong>
+  <a href="https://trustlens-u7stusobuiarm6jzslqsyu.streamlit.app/"><strong>🚀 Open the Live Application</strong></a>
+  &nbsp; · &nbsp;
+  <a href="https://github.com/tabishahmad17/TrustLens"><strong>View Source Code</strong></a>
 </p>
 
 <p align="center">
-  <img src="screenshots/Screenshot%202026-11-02%20230201.png" alt="TrustLens project screenshot" width="100%">
+  <img src="screenshots/Screenshot%202026-11-02%20230201.png" alt="TrustLens Operations Overview dashboard" width="92%">
 </p>
 
-## Overview
+---
 
-TrustLens is an end-to-end e-commerce analytics project that combines Python, PostgreSQL, Power BI and Generative AI to analyze delivery performance, customer satisfaction and business operations.
+## 1. Project Overview
 
-It includes interactive Power BI dashboards and an AI-powered Streamlit assistant that converts natural-language business questions into SQL queries, validates them and retrieves results from PostgreSQL.
+**TrustLens** is an end-to-end e-commerce analytics project built around the Brazilian E-Commerce Public Dataset by Olist. It brings together data preparation, PostgreSQL analytics, Power BI reporting and a natural-language AI assistant.
 
-## 🚀 Live Demo
+The project focuses on understanding order performance, gross merchandise value (GMV), delivery delays and customer review patterns. The Streamlit application provides an Operations Overview, Delivery Analysis and an AI Assistant that can answer business questions using database-backed SQL queries.
 
-Try the deployed application: **[Open TrustLens](https://trustlens-u7stusobuiarm6jzslqsyu.streamlit.app/)**
+> **Important:** TrustLens analyzes historical data and observed relationships. It does not predict or prevent delivery delays, and correlation should not be interpreted as causation.
 
-## Project Screenshots
+## 2. Live Demo
 
-### 1. Operations Overview
-![Operations Overview](screenshots/Screenshot%202026-11-02%20230201.png)
+**[Launch TrustLens on Streamlit Community Cloud](https://trustlens-u7stusobuiarm6jzslqsyu.streamlit.app/)**
 
-### 2. Delivery Analysis
-![Delivery Analysis](screenshots/Screenshot%202026-11-02%20230219.png)
+The live application connects to a hosted PostgreSQL database on Neon. Availability of AI responses also depends on the configured Gemini API key and API quota.
 
-### 3. TrustLens AI Assistant
-![AI Assistant](screenshots/Screenshot%202026-11-02%20230317.png)
+## 3. Features
 
-### 4. SQL Generation and Database Results
-![SQL Analytics](screenshots/Screenshot%202026-11-02%20230518.png)
+### Operations Overview
+- Total orders, GMV, late-delivery rate and average review score.
+- Monthly revenue and order trends.
+- Monthly delivery performance and state-level comparisons.
 
-## Business Problem
+### Delivery Analysis
+- Selectable purchase-date range.
+- Late-delivery rate, average actual delivery days and average estimated delivery days.
+- Review-score comparison by delay bucket.
+- Product categories with higher late-delivery rates.
+- Monthly actual-versus-estimated delivery days.
+- State-level delivery summary.
 
-Late deliveries can negatively affect customer satisfaction and operational performance.
+### TrustLens AI Assistant
+- Ask business questions in natural language.
+- Generate SQL with Google Gemini using the project schema context.
+- Validate generated SQL before execution.
+- Display generated SQL and database results.
+- Provide a business-oriented explanation of results.
+- Record assistant activity in a PostgreSQL audit table.
 
-TrustLens helps investigate questions such as:
+### Data and governance
+- Python-based data preparation and quality checks.
+- Raw and analytics schemas in PostgreSQL.
+- Reusable analytics views and SQL analysis scripts.
+- Separate database roles for read-only analytics and audit logging.
+- Query validation, read-only transaction settings, a query timeout and a result-row cap.
 
-- Which states have the highest late-delivery rates?
-- How do delivery delays relate to customer review scores?
-- Which product categories experience more delivery delays?
-- Which sellers contribute most to late deliveries?
-- How are monthly sales and order trends changing?
+## 4. Application Screenshots
 
-## Key Features
+### Operations Overview
+![TrustLens Operations Overview](screenshots/Screenshot%202026-11-02%20230201.png)
 
-- Python-based data ingestion and processing.
-- Data quality checks and validation.
-- PostgreSQL analytics views and business SQL queries.
-- Power BI dashboards for operational monitoring.
-- Gemini-powered natural-language SQL generation.
-- SQL validation before database execution.
-- Database result explanations.
-- Audit logging of assistant interactions.
+### Delivery Analysis
+![TrustLens Delivery Analysis](screenshots/Screenshot%202026-11-02%20230219.png)
 
-## System Architecture
+### AI Assistant
+![TrustLens AI Assistant](screenshots/Screenshot%202026-11-02%20230317.png)
 
-```mermaid
+### Generated SQL and database results
+![TrustLens SQL generation and results](screenshots/Screenshot%202026-11-02%20230518.png)
+
+## 5. Architecture
+
+~~~mermaid
 flowchart TD
-    A["Olist E-commerce Dataset"] --> B["Python Data Processing"]
-    B --> C["PostgreSQL Database"]
-    C --> D["Analytics Views and SQL"]
-    D --> E["Power BI Dashboards"]
-    C --> F["Streamlit AI Assistant"]
-    F --> G["Google Gemini"]
-    G --> H["SQL Generation"]
-    H --> I["SQL Validation"]
-    I --> J["PostgreSQL Query Execution"]
-    J --> K["Business Results and Explanation"]
-    J --> L["Audit Logging"]
-```
+    A["Olist e-commerce dataset"] --> B["Python data preparation and validation"]
+    B --> C[("PostgreSQL on Neon")]
+    C --> D["Raw and analytics schemas"]
+    D --> E["Analytics views and SQL"]
+    E --> F["Power BI dashboards"]
+    D --> G["Streamlit application"]
+    G --> H["Natural-language question"]
+    H --> I["Google Gemini"]
+    I --> J["SQL generation"]
+    J --> K["SQLGlot validation"]
+    K --> L["Read-only PostgreSQL query execution"]
+    L --> M["Results and explanation"]
+    L --> N["Audit logging"]
+~~~
 
-## Technology Stack
+**Application flow:** Python prepares and validates the data; PostgreSQL stores the raw and analytics data; Power BI presents business dashboards; and the Streamlit assistant uses Gemini to help translate business questions into validated SQL.
 
-| Area | Technologies |
+## 6. Technology Stack
+
+| Area | Tools |
 |---|---|
 | Programming | Python |
-| Database | PostgreSQL |
-| Data Analysis | Pandas, NumPy |
-| Visualization | Power BI, Matplotlib |
-| Generative AI | Google Gemini |
-| SQL Validation | SQLGlot |
-| Application | Streamlit |
-| Database Connectivity | Psycopg2 |
+| Data preparation | Pandas, NumPy |
+| Database | PostgreSQL, Neon |
+| Business intelligence | Power BI |
+| Web application | Streamlit |
+| Generative AI | Google Gemini (gemini-2.5-flash) |
+| SQL parsing and validation | SQLGlot |
+| Database connectivity | Psycopg2 |
+| Local configuration | python-dotenv |
+| Analysis and exploration | Jupyter Notebook, Matplotlib |
 
-## Analytics Modules
+## 7. Dataset
 
-**Operations Overview**
-- Total sales (GMV)
-- Total orders
-- Average order value
-- Average review score
-- Late delivery rate
-- State-wise delivery performance
+TrustLens uses the **Brazilian E-Commerce Public Dataset by Olist**. It contains approximately 100,000 orders and related data about customers, geolocation, order items, payments, reviews, products, sellers and product-category translations.
 
-**Delivery Analysis**
-- Delivery delay buckets
-- Review scores by delay bucket
-- Actual versus estimated delivery days
-- Category-wise late delivery
-- State-wise delivery performance
+The project’s raw schema contains these nine source tables:
 
-**AI Analytics Assistant**
-- Natural-language business questions
-- SQL query generation
-- SQL validation
-- Database result retrieval
-- Business-oriented explanations
+- customers
+- geolocation
+- order_items
+- order_payments
+- order_reviews
+- orders
+- products
+- sellers
+- category_translation
 
-## AI Assistant Workflow
+The analytics schema contains reusable views used by the dashboards and assistant, including **v_monthly_kpis**, **v_order_facts** and **v_seller_performance**.
 
-1. User submits a natural-language question.
-2. Gemini generates an SQL query using database schema context.
-3. SQLGlot validates the generated query.
-4. PostgreSQL executes the approved query.
-5. The assistant explains the returned results.
-6. The interaction is recorded in the audit log.
+## 8. Repository Structure
 
-## Dataset
-
-**Source:** Brazilian E-Commerce Public Dataset by Olist.
-
-The dataset contains approximately 100,000 orders and multiple related tables covering customers, orders, products, sellers, payments, reviews and geolocation.
-
-## Project Structure
-
-```text
+~~~text
 TrustLens/
 ├── app/
-│   └── streamlit_app.py
+│   ├── streamlit_app.py
+│   └── dashboard.py
 ├── data/
-│   ├── raw/
-│   └── processed/
+│   ├── raw/                 # Source data (not committed)
+│   └── processed/           # Processed files (not committed)
 ├── docs/
 │   ├── business_brief.md
 │   ├── data_dictionary.md
 │   └── data_quality_report.md
 ├── notebook/
 │   └── TrustLens_Python_EDA_Local.ipynb
-├── powerbi/
-├── screenshots/
+├── powerbi/                 # Power BI project files
+├── screenshots/             # README application screenshots
 ├── sql/
+│   ├── 01_data_quality.sql
+│   ├── 02_delivery_analysis.sql
+│   ├── 03_customer_satisfaction.sql
+│   ├── 04_business_analysis.sql
+│   ├── 05_read_only_user.sql
+│   └── 06_audit_user.sql
 ├── src/
-│   ├── assistant/
-│   ├── ingestion/
-│   └── validation/
+│   └── assistant/            # AI, database, SQL validation and audit modules
 ├── tests/
 ├── .gitignore
 ├── README.md
 └── requirements.txt
-```
+~~~
 
-## Installation and Setup
+## 9. Run Locally
+
+### Prerequisites
+- Python 3.10 or later.
+- PostgreSQL database with the TrustLens raw tables, analytics views and audit table configured.
+- A Google Gemini API key.
+- Git.
 
 ### 1. Clone the repository
 
-```bash
+~~~bash
 git clone https://github.com/tabishahmad17/TrustLens.git
 cd TrustLens
-```
+~~~
 
-### 2. Create a virtual environment
+### 2. Create and activate a virtual environment
 
-```bash
+**Windows PowerShell:**
+
+~~~powershell
 python -m venv .venv
-```
+.venv\Scripts\Activate.ps1
+~~~
 
-Activate it on Windows:
+**macOS / Linux:**
 
-```powershell
-.venv\\Scripts\\activate
-```
+~~~bash
+python -m venv .venv
+source .venv/bin/activate
+~~~
 
 ### 3. Install dependencies
 
-```bash
+~~~bash
 pip install -r requirements.txt
-```
+~~~
 
 ### 4. Configure environment variables
 
-Create a local `.env` file with the database and Gemini credentials required by your application.
+Create a **.env** file in the repository root. Add your own values locally; **never commit this file or share its contents**.
 
-Never commit `.env` or expose API keys and database passwords.
+~~~dotenv
+GEMINI_API_KEY=your_gemini_api_key
 
-### 5. Configure PostgreSQL
+DB_HOST=your_postgres_host
+DB_PORT=5432
+DB_NAME=your_database_name
+DB_SSLMODE=require
 
-Create the `trustlens` database, load the source dataset, and execute the required SQL scripts to prepare the raw tables, analytics views and application permissions.
+DB_READER_USER=trustlens_reader
+DB_READER_PASSWORD=your_reader_password
 
-### 6. Run the application
+DB_AUDIT_USER=trustlens_auditor
+DB_AUDIT_PASSWORD=your_auditor_password
 
-```bash
+# Optional: administrator credentials for database setup tasks only
+DB_USER=your_admin_username
+DB_PASSWORD=your_admin_password
+~~~
+
+The application reads configuration from environment variables / the local .env file, or from Streamlit secrets when deployed. Use separate, least-privilege credentials for the reader and auditor roles. Do not use the database-owner account for routine analytics queries.
+
+### 5. Prepare the database
+
+Create/configure the PostgreSQL database and load the Olist source tables into the **raw** schema. Create the analytics views and the **ops.audit_log** table required by the application.
+
+The SQL scripts in **sql/** document the data-quality checks, delivery analysis, customer-satisfaction analysis, business analysis and database-role grants. Review each script and run it with an appropriately privileged database account in the intended order. The role scripts create roles and grant permissions; configure each role's password separately and securely.
+
+### 6. Start the Streamlit application
+
+~~~bash
 streamlit run app/streamlit_app.py
-```
+~~~
 
-## Security and Governance
+Open the local URL printed by Streamlit in your browser.
 
-- SQL validation before query execution.
-- Read-only query execution settings.
-- Database connection separation for application operations.
-- Audit logging of assistant interactions.
-- Environment variables for sensitive configuration.
+## 10. Streamlit Community Cloud Deployment
 
-## Project Limitations
+The deployed application is hosted at:
 
-- Analysis is based on historical e-commerce data.
+**[https://trustlens-u7stusobuiarm6jzslqsyu.streamlit.app/](https://trustlens-u7stusobuiarm6jzslqsyu.streamlit.app/)**
+
+For deployment, configure the same required keys from the .env example in the app's **Streamlit Cloud → Settings → Secrets** section using TOML format:
+
+~~~toml
+GEMINI_API_KEY = "your_gemini_api_key"
+
+DB_HOST = "your_postgres_host"
+DB_PORT = "5432"
+DB_NAME = "your_database_name"
+DB_SSLMODE = "require"
+
+DB_READER_USER = "trustlens_reader"
+DB_READER_PASSWORD = "your_reader_password"
+
+DB_AUDIT_USER = "trustlens_auditor"
+DB_AUDIT_PASSWORD = "your_auditor_password"
+~~~
+
+Only add **DB_USER** and **DB_PASSWORD** if the deployed application setup path requires the administrator connection. Never put secrets in source code, screenshots, README values or Git history.
+
+## 11. Database Security and Governance
+
+TrustLens separates database responsibilities:
+
+| Role | Intended responsibility |
+|---|---|
+| neondb_owner | Database administration and setup |
+| trustlens_reader | Read-only analytics queries |
+| trustlens_auditor | Insert audit-log records |
+
+The assistant query path includes SQL validation, a read-only database transaction, a 10-second statement timeout and a maximum of 100 returned rows. Audit logging uses a separate database connection.
+
+The reader and auditor permissions were manually checked against the Neon database during project verification. The reader successfully queried the orders table and was denied a DELETE operation. The auditor was denied SELECT access to the audit table; an INSERT test was run inside a transaction and rolled back.
+
+These checks verify the tested database-role behavior; they are not a full security audit or a guarantee that every application path is vulnerability-free.
+
+## 12. Limitations
+
+- The analysis is based on historical Olist e-commerce data.
 - Observed relationships do not establish causation.
-- The assistant depends on the availability of the Gemini API and PostgreSQL database.
-- Generated SQL and explanations require appropriate validation and monitoring.
+- AI-generated SQL and explanations depend on the model, schema context, database availability and configured API quota.
+- Results depend on the selected date range and the definitions used in the SQL measures.
+- The application is an analytics and investigation tool; it does not predict or prevent delivery delays.
 
-## Project Objective
+## 13. Future Improvements
 
-TrustLens demonstrates how data engineering, SQL analytics, business intelligence and generative AI can work together to support data-driven operational decisions.
+- Expand automated tests for SQL validation, query execution and database permissions.
+- Add monitoring for application errors and database availability.
+- Continue refining documentation and reproducible database setup.
+- Evaluate additional business questions and analytical measures.
 
 ---
 
-**Project:** TrustLens  
-**Domain:** E-commerce Analytics  
-**Focus:** Python | PostgreSQL | Power BI | Generative AI | Business Intelligence
+## Project Information
 
-**Live App:** [Open TrustLens](https://trustlens-u7stusobuiarm6jzslqsyu.streamlit.app/)  
-**GitHub:** [tabishahmad17/TrustLens](https://github.com/tabishahmad17/TrustLens)
+- **Project:** TrustLens
+- **Domain:** E-commerce analytics
+- **Focus:** Data analytics · PostgreSQL · Power BI · Generative AI · Data governance
+- **Live demo:** [TrustLens on Streamlit](https://trustlens-u7stusobuiarm6jzslqsyu.streamlit.app/)
+- **Repository:** [tabishahmad17/TrustLens](https://github.com/tabishahmad17/TrustLens)
