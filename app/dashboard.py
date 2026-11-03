@@ -50,11 +50,14 @@ def render_operations_dashboard():
         late_rate = ((monthly["late_delivery_pct"] * monthly["delivered_orders"]).sum() / delivered) if delivered else 0
         review = monthly["avg_review_score"].mean()
 
-        a, b, c, d = st.columns(4)
-        a.metric("Total Orders", f"{orders:,.0f}")
-        b.metric("Total GMV", f"₹{revenue:,.0f}")
-        c.metric("Late Delivery Rate", f"{late_rate:.2f}%")
-        d.metric("Average Review Score", f"{review:.2f}/5" if pd.notna(review) else "N/A")
+        aov = revenue / orders if orders else 0
+
+        a, b, c, d, e = st.columns(5)
+        a.metric("Total Sales (GMV)", f"₹{revenue:,.0f}")
+        b.metric("Late Delivery Rate", f"{late_rate:.2f}%")
+        c.metric("Total Orders", f"{orders:,.0f}")
+        d.metric("Average Order Value", f"₹{aov:,.2f}")
+        e.metric("Average Review Score", f"{review:.2f}/5" if pd.notna(review) else "N/A")
 
         left, right = st.columns(2)
         with left:
