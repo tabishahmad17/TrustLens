@@ -1,3 +1,4 @@
+import sqlglot
 
 from db_connection import get_db_connection
 from sql_validator import validate_sql
@@ -23,10 +24,19 @@ def execute_query(sql):
 
     try:
 
-        # 2. Connect to PostgreSQL
+        # 2. Parse the already-validated SELECT and enforce a database-side
+        # outer limit. The inner query's own smaller LIMIT remains effective.
+        parsed_query = sqlglot.parse_one(sql, read="postgres")
+        limited_sql = (
+            "SELECT * FROM ("
+            + parsed_query.sql(dialect="postgres")
+            + f") AS trustlens_limited_result LIMIT {MAX_ROWS}"
+        )
+
+        # 3. Connect to PostgreSQL
         connection = get_db_connection()
 
-        # 3. Enable read-only transaction
+        # 4. Enable read-only transaction
         connection.set_session(
             readonly=True,
             autocommit=False
@@ -34,22 +44,22 @@ def execute_query(sql):
 
         cursor = connection.cursor()
 
-        # 4. Set 10-second transaction-local timeout
+        # 5. Set 10-second transaction-local timeout
         cursor.execute(
             "SELECT set_config('statement_timeout', %s, true)",
             (QUERY_TIMEOUT,)
         )
 
-        # 5. Execute validated SQL
-        cursor.execute(sql.rstrip().rstrip(";"))
+        # 6. Execute query with server-side result cap
+        cursor.execute(limited_sql)
 
-        # 6. Get column names
+        # 7. Get column names
         columns = [
             description[0]
             for description in cursor.description
         ]
 
-        # 7. Fetch maximum 100 rows
+        # 8. Fetch at most 100 rows
         rows = cursor.fetchmany(MAX_ROWS)
 
         results = [
