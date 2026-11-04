@@ -128,7 +128,7 @@ The project’s raw schema contains these nine source tables:
 
 The analytics schema contains reusable views used by the dashboards and assistant, including **v_monthly_kpis**, **v_order_facts** and **v_seller_performance**.
 
-## 8. Repository Structure
+## 13. Repository Structure
 
 ~~~text
 TrustLens/
@@ -161,7 +161,7 @@ TrustLens/
 └── requirements.txt
 ~~~
 
-## 9. Run Locally
+## 14. Run Locally
 
 ### Prerequisites
 - Python 3.10 or later.
@@ -237,7 +237,7 @@ streamlit run app/streamlit_app.py
 
 Open the local URL printed by Streamlit in your browser.
 
-## 10. Streamlit Community Cloud Deployment
+## 15. Streamlit Community Cloud Deployment
 
 The deployed application is hosted at:
 
@@ -262,7 +262,7 @@ DB_AUDIT_PASSWORD = "your_auditor_password"
 
 Only add **DB_USER** and **DB_PASSWORD** if the deployed application setup path requires the administrator connection. Never put secrets in source code, screenshots, README values or Git history.
 
-## 11. Database Security and Governance
+## 16. Database Security and Governance
 
 TrustLens separates database responsibilities:
 
@@ -278,7 +278,7 @@ The reader and auditor permissions were manually checked against the Neon databa
 
 These checks verify the tested database-role behavior; they are not a full security audit or a guarantee that every application path is vulnerability-free.
 
-## 12. Limitations
+## 17. Limitations
 
 - The analysis is based on historical Olist e-commerce data.
 - Observed relationships do not establish causation.
@@ -286,7 +286,7 @@ These checks verify the tested database-role behavior; they are not a full secur
 - Results depend on the selected date range and the definitions used in the SQL measures.
 - The application is an analytics and investigation tool; it does not predict or prevent delivery delays.
 
-## 13. Future Improvements
+## 18. Future Improvements
 
 - Expand automated tests for SQL validation, query execution and database permissions.
 - Add monitoring for application errors and database availability.
@@ -302,3 +302,58 @@ These checks verify the tested database-role behavior; they are not a full secur
 - **Focus:** Data analytics · PostgreSQL · Power BI · Generative AI · Data governance
 - **Live demo:** [TrustLens on Streamlit](https://trustlens-u7stusobuiarm6jzslqsyu.streamlit.app/)
 - **Repository:** [tabishahmad17/TrustLens](https://github.com/tabishahmad17/TrustLens)
+
+
+## 8. KPI Definitions
+
+The following definitions describe the measures used in the project. Always apply the same date filters and denominator when comparing Power BI, PostgreSQL and Streamlit results.
+
+| KPI | Project definition |
+|---|---|
+| GMV | Sum of order-item prices. Freight is not included in this item-price definition. |
+| Total Orders | Count of distinct order IDs in the selected scope. |
+| Average Order Value (AOV) | GMV divided by total orders, using the same order population and filters. |
+| Late Delivery Rate | Late delivered orders divided by delivered orders, expressed as a percentage. A delivery is late when its actual delivery date is later than its estimated delivery date. |
+| Average Review Score | Average of available review scores in the selected population. |
+
+**Data-quality note:** The data-quality report identifies eight delivered orders with missing actual delivery dates. Such orders cannot be classified reliably as early, on-time or late from the available dates. Check how the selected query/view handles these records before comparing late-delivery rates across tools.
+
+## 9. Verified Data-Quality Findings
+
+The checks documented in this repository identified:
+- Eight delivered orders with missing actual delivery dates.
+- One delivered order with no matching payment record.
+- Nine source tables loaded into the raw schema, with the row counts documented in [the data-quality report](docs/data_quality_report.md).
+
+These are data-quality findings, not claims that a particular operational factor caused late deliveries or lower review scores.
+
+## 10. Tests and Verification
+
+The repository contains manual smoke-test scripts under `tests/`. They are not currently a complete automated `pytest` test suite.
+
+For the SQL-validator script, run from the repository root:
+
+**Windows PowerShell**
+```powershell
+$env:PYTHONPATH = "src/assistant"
+python tests/test_sql_validator.py
+```
+
+**macOS / Linux**
+```bash
+PYTHONPATH=src/assistant python tests/test_sql_validator.py
+```
+
+Database-connection and query-runner scripts require valid local environment configuration and access to the configured PostgreSQL database. Run them only after setting up the database credentials. Do not commit your local `.env` file.
+
+Manual database-role checks are described in the security section above. They do not replace automated tests or a professional security audit.
+
+## 11. Dataset Source and Usage
+
+The source dataset is the [Brazilian E-Commerce Public Dataset by Olist on Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce). The source data covers orders from 2016–2018.
+
+Review the dataset's current Kaggle terms and license before redistributing source data or a Power BI `.pbix` file that may contain an imported copy of the data. This repository does not make a separate claim that redistribution rights have been granted.
+
+## 12. Live Application Availability
+
+The live demo is hosted on Streamlit Community Cloud. On a free hosting tier, an app that has been inactive may take a little time to wake up when first opened. AI responses also depend on Gemini API availability and quota.
