@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <img src="screenshots/Screenshot%202026-11-02%20230201.png" alt="TrustLens Operations Overview dashboard" width="92%">
+  <img src="screenshots/Screenshot%202026-11-04%20160146.png" alt="TrustLens Operations Overview dashboard" width="92%">
 </p>
 
 ---
@@ -63,16 +63,16 @@ The live application connects to a hosted PostgreSQL database on Neon. Availabil
 ## 4. Application Screenshots
 
 ### Operations Overview
-![TrustLens Operations Overview](screenshots/Screenshot%202026-11-02%20230201.png)
+![TrustLens Operations Overview](screenshots/Screenshot%202026-11-04%20160146.png)
 
 ### Delivery Analysis
 ![TrustLens Delivery Analysis](screenshots/Screenshot%202026-11-02%20230219.png)
 
 ### AI Assistant
-![TrustLens AI Assistant](screenshots/Screenshot%202026-11-02%20230317.png)
+![TrustLens AI Assistant](screenshots/Screenshot%202026-11-04%20155731.png)
 
 ### Generated SQL and database results
-![TrustLens SQL generation and results](screenshots/Screenshot%202026-11-02%20230518.png)
+![TrustLens SQL generation and results](screenshots/Screenshot%202026-11-04%20155731.png)
 
 ## 5. Architecture
 
