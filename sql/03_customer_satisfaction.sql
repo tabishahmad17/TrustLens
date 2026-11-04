@@ -4,7 +4,7 @@
 -- 1. Overall review score
 SELECT
     COUNT(*) AS review_rows,
-    ROUND(AVG(review_score::numeric), 2)
+    ROUND(AVG(NULLIF(TRIM(review_score), '')::numeric), 2)
         AS avg_review_score
 FROM raw.order_reviews;
 
@@ -13,7 +13,7 @@ FROM raw.order_reviews;
 SELECT
     CASE
         WHEN o.is_late = TRUE THEN 'Late'
-        ELSE 'Early or on-time'
+        WHEN o.is_late = FALSE THEN 'Early or on-time'
     END AS delivery_group,
     COUNT(*) AS reviewed_orders,
     ROUND(AVG(r.review_score), 2)
@@ -22,13 +22,14 @@ FROM analytics.v_order_facts AS o
 JOIN (
     SELECT
         order_id,
-        AVG(review_score::numeric) AS review_score
+        AVG(NULLIF(TRIM(review_score), '')::numeric) AS review_score
     FROM raw.order_reviews
     WHERE NULLIF(review_score, '') IS NOT NULL
     GROUP BY order_id
 ) AS r
     ON o.order_id = r.order_id
 WHERE o.order_status = 'delivered'
+  AND o.is_late IS NOT NULL
 GROUP BY 1
 ORDER BY avg_review_score;
 
@@ -42,7 +43,7 @@ SELECT
     ROUND(
         100.0 * COUNT(*) FILTER (
             WHERE o.is_late = TRUE
-        ) / COUNT(*),
+        ) / NULLIF(COUNT(*) FILTER (WHERE o.is_late IS NOT NULL), 0),
         2
     ) AS late_delivery_pct,
     ROUND(
@@ -61,10 +62,11 @@ FROM analytics.v_order_facts AS o
 JOIN (
     SELECT
         order_id,
-        AVG(review_score::numeric) AS review_score
+        AVG(NULLIF(TRIM(review_score), '')::numeric) AS review_score
     FROM raw.order_reviews
     WHERE NULLIF(review_score, '') IS NOT NULL
     GROUP BY order_id
 ) AS r
     ON o.order_id = r.order_id
-WHERE o.order_status = 'delivered';
+WHERE o.order_status = 'delivered'
+  AND o.is_late IS NOT NULL;
