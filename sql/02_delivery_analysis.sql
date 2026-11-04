@@ -4,13 +4,11 @@
 -- 1. Overall delivery performance
 SELECT
     COUNT(*) AS delivered_orders,
-    COUNT(*) FILTER (
-        WHERE is_late = TRUE
-    ) AS late_orders,
+    COUNT(*) FILTER (WHERE is_late IS NOT NULL) AS eligible_delivered_orders,
+    COUNT(*) FILTER (WHERE is_late = TRUE) AS late_orders,
     ROUND(
-        100.0 * COUNT(*) FILTER (
-            WHERE is_late = TRUE
-        ) / COUNT(*),
+        100.0 * COUNT(*) FILTER (WHERE is_late = TRUE)
+        / NULLIF(COUNT(*) FILTER (WHERE is_late IS NOT NULL), 0),
         2
     ) AS late_delivery_pct
 FROM analytics.v_order_facts
@@ -21,13 +19,11 @@ WHERE order_status = 'delivered';
 SELECT
     TO_CHAR(purchase_date, 'YYYY-MM') AS order_month,
     COUNT(*) AS delivered_orders,
-    COUNT(*) FILTER (
-        WHERE is_late = TRUE
-    ) AS late_orders,
+    COUNT(*) FILTER (WHERE is_late IS NOT NULL) AS eligible_delivered_orders,
+    COUNT(*) FILTER (WHERE is_late = TRUE) AS late_orders,
     ROUND(
-        100.0 * COUNT(*) FILTER (
-            WHERE is_late = TRUE
-        ) / COUNT(*),
+        100.0 * COUNT(*) FILTER (WHERE is_late = TRUE)
+        / NULLIF(COUNT(*) FILTER (WHERE is_late IS NOT NULL), 0),
         2
     ) AS late_delivery_pct
 FROM analytics.v_order_facts
@@ -42,13 +38,11 @@ ORDER BY late_delivery_pct DESC;
 SELECT
     c.customer_state,
     COUNT(*) AS delivered_orders,
-    COUNT(*) FILTER (
-        WHERE o.is_late = TRUE
-    ) AS late_orders,
+    COUNT(*) FILTER (WHERE o.is_late IS NOT NULL) AS eligible_delivered_orders,
+    COUNT(*) FILTER (WHERE o.is_late = TRUE) AS late_orders,
     ROUND(
-        100.0 * COUNT(*) FILTER (
-            WHERE o.is_late = TRUE
-        ) / COUNT(*),
+        100.0 * COUNT(*) FILTER (WHERE o.is_late = TRUE)
+        / NULLIF(COUNT(*) FILTER (WHERE o.is_late IS NOT NULL), 0),
         2
     ) AS late_delivery_pct
 FROM analytics.v_order_facts AS o
@@ -73,7 +67,8 @@ SELECT
     ROUND(
         100.0 * COUNT(DISTINCT o.order_id)
             FILTER (WHERE o.is_late = TRUE)
-        / NULLIF(COUNT(DISTINCT o.order_id), 0),
+        / NULLIF(COUNT(DISTINCT o.order_id)
+            FILTER (WHERE o.is_late IS NOT NULL), 0),
         2
     ) AS late_delivery_pct
 FROM analytics.v_order_facts AS o
@@ -84,6 +79,7 @@ JOIN raw.products AS p
 LEFT JOIN raw.category_translation AS ct
     ON p.product_category_name = ct.product_category_name
 WHERE o.order_status = 'delivered'
+  AND o.is_late IS NOT NULL
 GROUP BY 1
 HAVING COUNT(DISTINCT o.order_id) >= 100
 ORDER BY late_orders DESC
