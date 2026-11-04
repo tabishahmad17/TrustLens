@@ -21,6 +21,11 @@ def render_operations_dashboard():
         FROM analytics.v_monthly_kpis
         ORDER BY order_month;
     """
+    review_sql = """
+        SELECT ROUND(AVG(NULLIF(TRIM(review_score), '')::numeric), 2)
+               AS avg_review_score
+        FROM raw.order_reviews;
+    """
     state_sql = """
         SELECT c.customer_state,
                COUNT(DISTINCT f.order_id) AS delivered_orders,
@@ -37,6 +42,7 @@ def render_operations_dashboard():
     try:
         monthly = load_data(monthly_sql)
         states = load_data(state_sql)
+        review_data = load_data(review_sql)
         if monthly.empty:
             st.info("No monthly KPI data is available.")
             return
@@ -48,7 +54,7 @@ def render_operations_dashboard():
         revenue = monthly["gmv"].sum()
         delivered = monthly["delivered_orders"].sum()
         late_rate = ((monthly["late_delivery_pct"] * monthly["delivered_orders"]).sum() / delivered) if delivered else 0
-        review = monthly["avg_review_score"].mean()
+        review = pd.to_numeric(review_data.loc[0, "avg_review_score"], errors="coerce") if not review_data.empty else float("nan")
 
         aov = revenue / orders if orders else 0
 
