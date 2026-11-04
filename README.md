@@ -313,9 +313,10 @@ The following definitions describe the measures used in the project. Always appl
 | GMV | Sum of order-item prices. Freight is not included in this item-price definition. |
 
 **Displayed Operations Overview GMV:** approximately **₹13.5M (₹1,35,00,000 / 1 crore 35 lakh)**. This is the rounded value shown on the dashboard; use the underlying exact database measure for precise reporting.
+
 | Total Orders | Count of distinct order IDs in the selected scope. |
 | Average Order Value (AOV) | GMV divided by total orders, using the same order population and filters. |
-| Late Delivery Rate | Late delivered orders divided by delivered orders, expressed as a percentage. A delivery is late when its actual delivery date is later than its estimated delivery date. |
+| Late Delivery Rate | Late delivered orders divided by delivered orders with a known late/on-time classification, expressed as a percentage. Orders missing an actual delivery date are excluded from this rate. A delivery is late when its actual delivery date is later than its estimated delivery date. |
 | Average Review Score | Average of available review scores in the selected population. |
 
 **Data-quality note:** The data-quality report identifies eight delivered orders with missing actual delivery dates. Such orders cannot be classified reliably as early, on-time or late from the available dates. Check how the selected query/view handles these records before comparing late-delivery rates across tools.
@@ -323,7 +324,7 @@ The following definitions describe the measures used in the project. Always appl
 ## 9. Verified Data-Quality Findings
 
 The checks documented in this repository identified:
-- Eight delivered orders with missing actual delivery dates.
+- Eight delivered orders with missing actual delivery dates. These are excluded from the eligible denominator for late-delivery rates.
 - One delivered order with no matching payment record.
 - Nine source tables loaded into the raw schema, with the row counts documented in [the data-quality report](docs/data_quality_report.md).
 
