@@ -26,6 +26,15 @@ def render_operations_dashboard():
                AS avg_review_score
         FROM raw.order_reviews;
     """
+    late_rate_sql = """
+        SELECT ROUND(
+            100.0 * COUNT(*) FILTER (WHERE is_late = TRUE)
+            / NULLIF(COUNT(*) FILTER (WHERE is_late IS NOT NULL), 0),
+            2
+        ) AS late_delivery_rate
+        FROM analytics.v_order_facts
+        WHERE order_status = 'delivered';
+    """
     state_sql = """
         SELECT c.customer_state,
                COUNT(DISTINCT f.order_id) AS delivered_orders,
@@ -43,6 +52,7 @@ def render_operations_dashboard():
         monthly = load_data(monthly_sql)
         states = load_data(state_sql)
         review_data = load_data(review_sql)
+        late_rate_data = load_data(late_rate_sql)
         if monthly.empty:
             st.info("No monthly KPI data is available.")
             return
@@ -53,14 +63,14 @@ def render_operations_dashboard():
         orders = monthly["total_orders"].sum()
         revenue = monthly["gmv"].sum()
         delivered = monthly["delivered_orders"].sum()
-        late_rate = ((monthly["late_delivery_pct"] * monthly["delivered_orders"]).sum() / delivered) if delivered else 0
+        late_rate = pd.to_numeric(late_rate_data.loc[0, "late_delivery_rate"], errors="coerce") if not late_rate_data.empty else float("nan")
         review = pd.to_numeric(review_data.loc[0, "avg_review_score"], errors="coerce") if not review_data.empty else float("nan")
 
         aov = revenue / orders if orders else 0
 
         a, b, c, d, e = st.columns(5)
         a.metric("Total Sales (GMV)", f"₹{revenue:,.0f}")
-        b.metric("Late Delivery Rate", f"{late_rate:.2f}%")
+        b.metric("Late Delivery Rate", f"{late_rate:.2f}%" if pd.notna(late_rate) else "N/A")
         c.metric("Total Orders", f"{orders:,.0f}")
         d.metric("Average Order Value", f"₹{aov:,.2f}")
         e.metric("Average Review Score", f"{review:.2f}/5" if pd.notna(review) else "N/A")
