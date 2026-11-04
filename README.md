@@ -311,6 +311,8 @@ The following definitions describe the measures used in the project. Always appl
 | KPI | Project definition |
 |---|---|
 | GMV | Sum of order-item prices. Freight is not included in this item-price definition. |
+
+**Displayed Operations Overview GMV:** approximately **₹13.5M (₹1,35,00,000 / 1 crore 35 lakh)**. This is the rounded value shown on the dashboard; use the underlying exact database measure for precise reporting.
 | Total Orders | Count of distinct order IDs in the selected scope. |
 | Average Order Value (AOV) | GMV divided by total orders, using the same order population and filters. |
 | Late Delivery Rate | Late delivered orders divided by delivered orders, expressed as a percentage. A delivery is late when its actual delivery date is later than its estimated delivery date. |
